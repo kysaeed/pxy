@@ -2,7 +2,10 @@
 スマホ縦持ちで画面が縦長の場合に、ゲーム画面を90度回転させて表示するデモです。
 
 
+↓このように余白ができてしまう場合に
 ![h](https://github.com/user-attachments/assets/5c2bea9c-9191-4006-a6cf-310a92728415)
+
+↓90度回転で詰める
 ![v](https://github.com/user-attachments/assets/cbf03d48-8f09-4411-9cdb-efe55fc90f3d)
 
 

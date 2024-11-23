@@ -17,6 +17,7 @@ const scene = {
 
   create() {
 
+    // 回転用の親コンテナ すべての表示要素をこのコンテナにいれる
     this.anchor = this.add.container(0, 0)
     this.anchor.angle = 0
 
@@ -104,17 +105,7 @@ const scene = {
           },
         ],
       })
-      console.log('CLICK')
     })
-
-    /*
-    let fullText = this.add.text(10, 10, 'フルスクリーンにする')
-      .setInteractive()
-      .on('pointerup', () => {
-          this.scale.startFullscreen();
-      });
-    this.anchor.add(fullText)
-    */
 
     const isVertical = () => {
 
@@ -135,31 +126,60 @@ const scene = {
 
     const setRotateState = (isRotate) => {
       if (isRotate) {
+        // [|] 縦長スクリーンに表示
         game.scale.displaySize.setAspectRatio( Constants.Screen.Height/Constants.Screen.Width );
         game.scale.resize(Constants.Screen.Height, Constants.Screen.Width)
         this.anchor.angle = 90
         this.anchor.x = Constants.Screen.Height
+        game.scale.refresh()
       } else {
+        // [--] 横長スクリーンに表示
         game.scale.displaySize.setAspectRatio( Constants.Screen.Width/Constants.Screen.Height );
         game.scale.resize(Constants.Screen.Width, Constants.Screen.Height)
         this.anchor.x = 0
         this.anchor.angle = 0
+        game.scale.refresh()
       }
     }
 
-
-    window.onresize = () => {
+    const fit = () => {
       /*
       // PCの場合は、ディレプレイの持ち方を変えないので回転しない
       if (game.device.os.desktop) {
         return
       }
       */
-
       setRotateState(isVertical())
     }
 
+    let h
+    const onResize = () => {
 
+      if (h) {
+        clearTimeout(h)
+      }
+      h = setTimeout(() => {
+        fit()
+      }, 100)
+    }
+
+    window.onresize = () => {
+      onResize()
+    }
+
+    /*
+    // 旧仕様互換
+    window.onorientationchange = () => {
+      onResize()
+    }
+    */
+
+    screen.orientation.onchange = () => {
+      onResize()
+    }
+
+    // 初期化
+    fit()
   },
 
   update() {

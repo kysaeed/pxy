@@ -17,28 +17,22 @@ const scene = {
 
   create() {
 
-    // 回転用の親コンテナ すべての表示要素をこのコンテナにいれる
-    this.anchor = this.add.container(0, 0)
-    this.anchor.angle = 0
-
+    // 90度回転の中心点を設定
+    this.cameras.main.originX = 0.5
+    this.cameras.main.originY = (Constants.Screen.Height * 0.5) / Constants.Screen.Width
 
     // 背景画像
     let board = this.add.image(0, 0, 'board')
     board.setPosition(board.width / 2, board.height / 2)
-    this.anchor.add(board)
-
 
     let text = this.add.text(10, 10, '画面回転のデモ')
       .setFontSize(48)
       .setColor('#0a0a0a')
       .setPadding(0, 4, 0, 4)
-    this.anchor.add(text)
 
     let cardB = this.add.image(400, 200, 'card_b')
-    this.anchor.add(cardB)
 
     let cardA = this.add.image(400, 360, 'card_a')
-    this.anchor.add(cardA)
 
     cardB.scale = 0.5
     cardA.scale = 0.5
@@ -129,15 +123,13 @@ const scene = {
         // [|] 縦長スクリーンに表示
         game.scale.displaySize.setAspectRatio( Constants.Screen.Height/Constants.Screen.Width );
         game.scale.resize(Constants.Screen.Height, Constants.Screen.Width)
-        this.anchor.angle = 90
-        this.anchor.x = Constants.Screen.Height
+        this.cameras.main.setRotation(Math.PI * 0.5)
         game.scale.refresh()
       } else {
         // [--] 横長スクリーンに表示
         game.scale.displaySize.setAspectRatio( Constants.Screen.Width/Constants.Screen.Height );
         game.scale.resize(Constants.Screen.Width, Constants.Screen.Height)
-        this.anchor.x = 0
-        this.anchor.angle = 0
+        this.cameras.main.setRotation(0)
         game.scale.refresh()
       }
     }
